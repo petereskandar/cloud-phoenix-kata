@@ -13,9 +13,9 @@ const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
-app.use(dblogger(process.env.DB_CONNECTION_STRING, 'combined', {
+/*app.use(dblogger(process.env.DB_CONNECTION_STRING, 'combined', {
   collection: 'logs'
-}))
+}))*/
 app.use(logger('combined'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
