@@ -12,4 +12,7 @@ RUN npm install
 # Bundle app source
 COPY . /src/app/
 
+# task definition volume
+VOLUME ["/usr/app"]
+
 CMD [ "npm", "start" ]
