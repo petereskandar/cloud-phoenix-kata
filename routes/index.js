@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const childProcess = require('child_process');
-const pki = require('node-forge').pki
+const fs = require('fs')
+const ssl = require('../generateCert/generateCert')
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {title: 'Express v2'})
+  res.render('index', {title: 'Cloud Phoenix Kata', hostname: req.hostname})
 })
 
 router.get('/crash', function (req, res, next) {
@@ -18,18 +19,29 @@ router.get('/crash', function (req, res, next) {
             stdio: "inherit"
         });
     });
-    process.exit();
+    process.exit(1);
   }, 0);
 })
 
 router.get('/generatecert', function (req, res, next) {
-  const keys = pki.rsa.generateKeyPair(2048)
-  const cert = pki.createCertificate()
-  cert.publicKey = keys.publicKey
-  res.send({
-    keys: keys,
+  // generate key and save it locally
+  ssl.generateCert();
+  const key  = fs.readFileSync(ssl.SSL_PATH + 'generated-key.pem')
+  const cert = fs.readFileSync(ssl.SSL_PATH + 'generated-cert.pem')
+  setTimeout(() =>   res.send({
+    keys: key,
     cert: cert
-  })
+  }), 0)
+})
+
+router.get('/certRender', (req, res, next) => {
+  ssl.generateCert();
+  const key  = fs.readFileSync(ssl.SSL_PATH + 'generated-key.pem')
+  const cert = fs.readFileSync(ssl.SSL_PATH + 'generated-cert.pem')
+    res.render('certificate', {
+      keys: key,
+      cert: cert
+    })
 })
 
 module.exports = router

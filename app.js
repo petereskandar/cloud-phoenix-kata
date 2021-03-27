@@ -1,5 +1,6 @@
 const createError = require('http-errors')
 const express = require('express')
+const hbs = require("hbs");
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
@@ -10,6 +11,7 @@ const indexRouter = require('./routes/index')
 const app = express()
 
 // view engine setup
+hbs.registerPartials(__dirname + "/views/partials");
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
@@ -39,5 +41,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.render('error')
 })
+
 
 module.exports = app
