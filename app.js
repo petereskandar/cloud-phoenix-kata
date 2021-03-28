@@ -19,7 +19,7 @@ app.set('view engine', 'hbs')
 
 // mongodb://username:password@host:port/database
 // process.env.DB_CONNECTION_STRING
-app.use(dblogger('process.env.DB_CONNECTION_STRING', 'combined', {
+/*app.use(dblogger('process.env.DB_CONNECTION_STRING', 'combined', {
   collection: 'logs'
 }))
 
@@ -29,7 +29,7 @@ const mongoConn = mongoose.connection;
 
 mongoConn.once('open', () => {
   console.log("MongoDB database connection established successfully");
-});
+});*/
 
 app.use(logger('combined'))
 app.use(express.json())
