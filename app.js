@@ -19,12 +19,12 @@ app.set('view engine', 'hbs')
 
 // mongodb://user:pwd@local.phoenix-mongo-db-service:27017/demoDB
 // process.env.DB_CONNECTION_STRING
-app.use(dblogger('process.env.DB_CONNECTION_STRING', 'combined', {
+app.use(dblogger(process.env.DB_CONNECTION_STRING, 'combined', {
   collection: 'logs'
 }))
 
 //mongodb://root:root@192.168.237.17:27017/demoDB
-mongoose.connect('process.env.DB_CONNECTION_STRING', { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.DB_CONNECTION_STRING, { useUnifiedTopology: true, useNewUrlParser: true });
 const mongoConn = mongoose.connection;
 
 mongoConn.once('open', () => {
