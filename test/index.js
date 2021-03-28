@@ -6,7 +6,7 @@ const it = require('mocha').it
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const app = require('../app')
-const server = app.listen(process.env.PORT || 3000)
+const server = app.listen(process.env.PORT || 8080)
 const should = chai.should()
 
 chai.use(chaiHttp)

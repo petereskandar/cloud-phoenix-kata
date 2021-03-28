@@ -10,6 +10,7 @@ router.get('/', function (req, res, next) {
   res.render('index', {title: 'Cloud Phoenix Kata v2.1', hostname: req.hostname})
 })
 
+// crash api 
 router.get('/crash', function (req, res, next) {
   console.log(new Error('Requested crash by endpoint /crash'))
   setTimeout(function () {
@@ -24,6 +25,7 @@ router.get('/crash', function (req, res, next) {
   }, 0);
 })
 
+// generate cert
 router.get('/generatecert', function (req, res, next) {
   // generate key and save it locally
   ssl.generateCert();
@@ -49,8 +51,19 @@ router.get('/certRender', (req, res, next) => {
 // check DB connection status
 router.get('/checkdbConn', (req, res, next) => {
   res.send({
-    connectionStatus: mongoose.STATES[mongoose.connection.readyState]
+    connectionStatus: mongoose.STATES[mongoose.connection.readyState],
+    connectionString: process.env.DB_CONNECTION_STRING ? process.env.DB_CONNECTION_STRING : 'localhost'
   })
 })
+
+// find all logs in Logs Collection
+router.get('/querylogs', (req, res, next) => {
+  mongoose.connection.db.collection('logs', (err, collection) => {
+    collection.find({}).toArray((err, data) => {
+       res.send({logs: data});
+    })
+  })
+})
+
 
 module.exports = router
