@@ -5,6 +5,8 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const dblogger = require('mongo-morgan')
+const mongoose = require("mongoose");
+
 
 const indexRouter = require('./routes/index')
 
@@ -15,9 +17,20 @@ hbs.registerPartials(__dirname + "/views/partials");
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
-/*app.use(dblogger(process.env.DB_CONNECTION_STRING, 'combined', {
+// mongodb://username:password@host:port/database
+// process.env.DB_CONNECTION_STRING
+app.use(dblogger('process.env.DB_CONNECTION_STRING', 'combined', {
   collection: 'logs'
-}))*/
+}))
+
+//mongodb://root:root@192.168.237.17:27017/demoDB
+mongoose.connect('process.env.DB_CONNECTION_STRING', { useUnifiedTopology: true, useNewUrlParser: true });
+const mongoConn = mongoose.connection;
+
+mongoConn.once('open', () => {
+  console.log("MongoDB database connection established successfully");
+});
+
 app.use(logger('combined'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))

@@ -13,6 +13,6 @@ RUN npm install
 COPY . /src/app/
 
 # task definition volume
-VOLUME ["/usr/app"]
+VOLUME ["/src/app"]
 
 CMD [ "npm", "start" ]

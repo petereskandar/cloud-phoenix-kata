@@ -1,0 +1,12 @@
+FROM mongo:latest
+
+RUN mkdir -p /data/db2 \
+    && echo "dbpath = /data/db2" > /etc/mongodb.conf \
+    && chown -R mongodb:mongodb /data/db2 
+
+ADD . /data/db2/
+
+RUN mongod --fork --logpath /var/log/mongodb.log \
+    && sleep 5 \
+    && mongo demoDB /data/db2/setAuth.js \
+    && chown -R mongodb:mongodb /tmp/mongodb-27017.sock

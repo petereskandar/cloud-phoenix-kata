@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require("mongoose");
 const fs = require('fs')
 const ssl = require('../generateCert/generateCert')
 
@@ -28,12 +29,13 @@ router.get('/generatecert', function (req, res, next) {
   ssl.generateCert();
   const key  = fs.readFileSync(ssl.SSL_PATH + 'generated-key.pem')
   const cert = fs.readFileSync(ssl.SSL_PATH + 'generated-cert.pem')
-  setTimeout(() =>   res.send({
+  setTimeout(() => res.send({
     keys: key,
     cert: cert
   }), 0)
 })
 
+// cert renderer template --> for test purposes
 router.get('/certRender', (req, res, next) => {
   ssl.generateCert();
   const key  = fs.readFileSync(ssl.SSL_PATH + 'generated-key.pem')
@@ -42,6 +44,13 @@ router.get('/certRender', (req, res, next) => {
       keys: key,
       cert: cert
     })
+})
+
+// check DB connection status
+router.get('/checkdbConn', (req, res, next) => {
+  res.send({
+    connectionStatus: mongoose.STATES[mongoose.connection.readyState]
+  })
 })
 
 module.exports = router
