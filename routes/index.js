@@ -7,7 +7,7 @@ const ssl = require('../generateCert/generateCert')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {title: 'Cloud Phoenix Kata', hostname: req.hostname})
+  res.render('index', {title: 'Cloud Phoenix Kata V1', hostname: req.hostname})
 })
 
 router.get('/crash', function (req, res, next) {
