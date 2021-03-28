@@ -17,9 +17,9 @@ hbs.registerPartials(__dirname + "/views/partials");
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'hbs')
 
-// mongodb://username:password@host:port/database
+// mongodb://user:pwd@local.phoenix-mongo-db-service:27017/demoDB
 // process.env.DB_CONNECTION_STRING
-/*app.use(dblogger('process.env.DB_CONNECTION_STRING', 'combined', {
+app.use(dblogger('process.env.DB_CONNECTION_STRING', 'combined', {
   collection: 'logs'
 }))
 
@@ -29,7 +29,7 @@ const mongoConn = mongoose.connection;
 
 mongoConn.once('open', () => {
   console.log("MongoDB database connection established successfully");
-});*/
+});
 
 app.use(logger('combined'))
 app.use(express.json())
