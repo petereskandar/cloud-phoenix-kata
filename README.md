@@ -10,7 +10,7 @@ I've used the following services to set up the current environment :
     1. Github: as a code repo  
     2. AWS ECR: as docker image repository  
     3. AWS Fargate: for docker containers deployment (Server & MongoDB)  
-    4. AWS Application Load Balancer & Target Group:** for Container Orchestration  
+    4. AWS Application Load Balancer & Target Group: for Container Orchestration  
     5. ECS Fargate Service Autoscaling:** for containers autoscaling  
     6. CloudWatch:  
            - for containers logs   
@@ -23,7 +23,7 @@ I've used the following services to set up the current environment :
 
 ---
 
-# **AWS Fargate :**  
+# **AWS ECS Fargate :**  
 * I've created two dockerfiles, one for the **Node server** and the other one was for **MongoDB**, after building both of them, they were pushed to **ECR** as shown below
 ![image](https://user-images.githubusercontent.com/24432011/112832203-43fb4680-9095-11eb-9f08-303feea24f9e.png)
 * Then I've created two task definitions one for each container using the images already pushed to ECR, Created an **ECS Fargate Cluster** and then a Service for each task Definition
@@ -62,7 +62,7 @@ and by using **Service discovery integration** in **ECS Fargate** service a reco
                
        - on **build** :
             - Docker Image Build
-            - Docker Imange tag
+            - Docker Image tag
                  ```
                  build:
                     commands:
@@ -73,7 +73,7 @@ and by using **Service discovery integration** in **ECS Fargate** service a reco
                       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
                  ```
       - on **post_build** :
-           - Push update Docker Image to **ECR**
+           - Push updated Docker Image to **ECR**
            - Update the **ECS Cluster Service** (the one running the node server) with force-new-deployment to get the latest pushed image from ECR
 
                   post_build:
@@ -133,7 +133,7 @@ everything worked fine locally but after using **Containers** with **ECS Fargate
 
 ---
 
-# **API Endpoint:**
+# **API Endpoints:**
 * By visting **http://phoenix.petereskandar.com/**, you'll find a list of API Endpoints as show from the image below.
 * Each API has an endpoint and description fields
 * you can click on the **Try** button to test the api in real time
