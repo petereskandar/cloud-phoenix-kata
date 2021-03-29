@@ -23,7 +23,7 @@ I've used the following services to set up the current environment :
 
 
 **AWS Fargate :**  
-* I've created two dockerfiles, one for the node server and the other one was for MongDB, after building both of them, they were pushed to **ECR** as shown below
+* I've created two dockerfiles, one for the **Node server** and the other one was for **MongoDB**, after building both of them, they were pushed to **ECR** as shown below
 ![image](https://user-images.githubusercontent.com/24432011/112832203-43fb4680-9095-11eb-9f08-303feea24f9e.png)
 * Then I've created two task definitions one for each container using the images already pushed to ECR, Created an **ECS Fargate Cluster** and then a Service for each task Definition
 ![image](https://user-images.githubusercontent.com/24432011/112829187-0ac0d780-9091-11eb-9df2-4ab60596fa6d.png)
@@ -65,10 +65,10 @@ and then a weekly backup could be done for this shred file system
                       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
                  ```
       - on **post_build** :
-            - Push update Docker Image to **ECR**
-            - Update the **ECS Cluster Service** (the one running the node server) with force-new-deployment to get the latest pushed image from ECR
+           - Push update Docker Image to **ECR**
+           - Update the **ECS Cluster Service** (the one running the node server) with force-new-deployment to get the latest pushed image from ECR
 
-                 ```
+                 ```javascript
                   post_build:
                     commands:
                       - echo Build completed on `date`
