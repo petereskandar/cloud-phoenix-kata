@@ -75,7 +75,6 @@ and by using **Service discovery integration** in **ECS Fargate** service a reco
            - Push update Docker Image to **ECR**
            - Update the **ECS Cluster Service** (the one running the node server) with force-new-deployment to get the latest pushed image from ECR
 
-                 ```javascript
                   post_build:
                     commands:
                       - echo Build completed on `date`
@@ -83,6 +82,5 @@ and by using **Service discovery integration** in **ECS Fargate** service a reco
                       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
                       - aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment
                       - echo success force update-service
-                 ```
        
 ---            
