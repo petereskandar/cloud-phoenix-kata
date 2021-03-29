@@ -32,7 +32,7 @@ I've used the following services to set up the current environment :
 and will manage tasks health checks, so in case of failure a new task will be created (for example when calling the **/crash** api)
 ![image](https://user-images.githubusercontent.com/24432011/112829837-fb8e5980-9091-11eb-855c-adee03bf1f3e.png)<br/>
 * For Backup logs and Database, my idea was to create a shared file system (for example: **EFS**) where all containers will mount to, 
-and then schedule a weekly for this shred file system
+and then schedule a weekly for this shred file system  
 ![image](https://user-images.githubusercontent.com/24432011/112833738-70b05d80-9097-11eb-9aca-ea35cfc3809a.png)<br/>
 * For Autoscaling; I've created the following role to scale the node server (adding more **Fargate Tasks**) in case of increated traffic
 ![image](https://user-images.githubusercontent.com/24432011/112834233-08ae4700-9098-11eb-9255-5c008e39c25b.png)<br/>
