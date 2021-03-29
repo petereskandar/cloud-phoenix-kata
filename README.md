@@ -20,7 +20,7 @@ I've used the following services to set up the current environment :
     9. AWS CodePipeLine & AWS CodeBuild: for CI/CD
     10. AWS CloudFormation: I wanted to prepare a Cloudformation template but I ran out of time
 
-
+---
 
 **AWS Fargate :**  
 * I've created two dockerfiles, one for the **Node server** and the other one was for **MongoDB**, after building both of them, they were pushed to **ECR** as shown below
@@ -35,7 +35,14 @@ and then a weekly backup could be done for this shred file system
 ![image](https://user-images.githubusercontent.com/24432011/112833738-70b05d80-9097-11eb-9aca-ea35cfc3809a.png)
 * For Autoscaling; I've created the following role to scale the node server (adding more **Fargate Tasks**) in case of increated traffic
 ![image](https://user-images.githubusercontent.com/24432011/112834233-08ae4700-9098-11eb-9255-5c008e39c25b.png)
+* Regarding Containers communication, as mentioned above, I've created a private hosed zone with **AWS Route53**, 
+and by using **Service discovery integration** in **ECS Fargate** service a record has been created for the Service running **MongoDB** tasks (phoenix-mongo-db-service.local)
 
+![image](https://user-images.githubusercontent.com/24432011/112839409-78bfcb80-909e-11eb-957f-384464dd7bf4.png)
+* to be able to pass the **DB_CONNECTION_STRING** as an environment variables to all **Node server** tasks, i do it as following :
+![image](https://user-images.githubusercontent.com/24432011/112840136-42368080-909f-11eb-96b2-db8c0cc2a08a.png)
+
+---
 
 **CI/CD Implementation :**
 * The CI/CD pipeline is up and running, to test it just modify the code and push it to **master** branch, all changes will be reflected on **http://phoenix.petereskandar.com/**
@@ -78,4 +85,4 @@ and then a weekly backup could be done for this shred file system
                       - echo success force update-service
                  ```
        
-            
+---            
