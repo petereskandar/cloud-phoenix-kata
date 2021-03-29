@@ -1,6 +1,6 @@
 Hi all,
 
-I've deployed the whole infrastructure on AWS, the infrastructure is up and running and you can checkt it out by visiting http://phoenix.petereskandar.com/
+I've deployed the whole infrastructure on AWS, the infrastructure is up and running and you can checkt it out by visiting **http://phoenix.petereskandar.com/**
 
 ![image](https://user-images.githubusercontent.com/24432011/112828859-91c18000-9090-11eb-88fb-d4c275ec0ed0.png)
 
@@ -22,7 +22,7 @@ I've used the following services to set up the current environment :
 
 
 
-**AWS Fargate** : 
+**AWS Fargate :**  
 * I've created two dockerfiles, one for the node server and the other one was for MongDB, after building both of them, they were pushed to **ECR** as shown below
 ![image](https://user-images.githubusercontent.com/24432011/112832203-43fb4680-9095-11eb-9f08-303feea24f9e.png)
 * Then I've created two task definitions one for each container using the images already pushed to ECR, Created an **ECS Fargate Cluster** and then a Service for each task Definition
@@ -35,3 +35,47 @@ and then a weekly backup could be done for this shred file system
 ![image](https://user-images.githubusercontent.com/24432011/112833738-70b05d80-9097-11eb-9aca-ea35cfc3809a.png)
 * For Autoscaling; I've created the following role to scale the node server (adding more **Fargate Tasks**) in case of increated traffic
 ![image](https://user-images.githubusercontent.com/24432011/112834233-08ae4700-9098-11eb-9255-5c008e39c25b.png)
+
+
+**CI/CD Implementation :**
+* The CI/CD pipeline is up and running, to test it just modify the code and push it to **master** branch, all changes will be reflected on **http://phoenix.petereskandar.com/**
+* As mentioned above, I've used AWS Codepipline with AWS CodeBuild and Github repo for implementing the pipline.
+* The CI/CD pipeline works in the following way : 
+    - On Code change on **master** branch, **AWS Codepipline** will trigger **CodeBuild** to do the following tasks using the **buildspec.yml** file : 
+        - on **pre_build** : 
+            - Login to **ECR** repo
+              ```
+               pre_build:
+                   commands:
+                     - printenv
+                     - echo Logging in to Amazon ECR...
+                     - aws ecr get-login-password --region $AWS_DEFAU
+               ```
+               
+       - on **build** :
+            - Docker Image Build
+            - Docker Imange tag
+                 ```
+                 build:
+                    commands:
+                      - echo Build started on `date`
+                      - echo Building the Docker image...
+                      - echo $AWS_DEFAULT_REGION:$IMAGE_TAG
+                      - docker build -t $IMAGE_REPO_NAME .
+                      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+                 ```
+      - on **post_build** :
+            - Push update Docker Image to **ECR**
+            - Update the **ECS Cluster Service** (the one running the node server) with force-new-deployment to get the latest pushed image from ECR
+
+                 ```
+                  post_build:
+                    commands:
+                      - echo Build completed on `date`
+                      - echo Pushing the Docker image...
+                      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+                      - aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment
+                      - echo success force update-service
+                 ```
+       
+            
