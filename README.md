@@ -5,20 +5,19 @@ I've deployed the whole infrastructure on AWS, the infrastructure is up and runn
 ![image](https://user-images.githubusercontent.com/24432011/112828859-91c18000-9090-11eb-88fb-d4c275ec0ed0.png)
 
 I've used the following services to set up the current environment : 
-
-    1. Github: as a code repo
-    2. AWS ECR: as docker image repository
-    3. AWS Fargate: for docker containers deployment (Server & MongoDB)
-    4. AWS Application Load Balancer & Target Group: for Container Orchestration
-    5. ECS Fargate Service Autoscaling: for containers autoscaling
-    6. CloudWatch: 
+    1. **Github:** as a code repo
+    2. **AWS ECR:** as docker image repository
+    3. **AWS Fargate:** for docker containers deployment (Server & MongoDB)
+    4. **AWS Application Load Balancer & Target Group:** for Container Orchestration
+    5. **ECS Fargate Service Autoscaling:** for containers autoscaling
+    6. **CloudWatch:** 
        - for containers logs 
        - containers autoscaling triggering
-    8.  AWS Route53: 
+    8.  **AWS Route53:** 
        - for DNS Management (http://phoenix.petereskandar.com/)
        - for AWS Fargate Services Communication using a private hosted zone (phoenix-mongo-db-service.local)
-    9. AWS CodePipeLine & AWS CodeBuild: for CI/CD
-    10. AWS CloudFormation: I wanted to prepare a Cloudformation template but I ran out of time
+    9. **AWS CodePipeLine & AWS CodeBuild:** for CI/CD
+    10. **AWS CloudFormation:** I wanted to prepare a Cloudformation template but I ran out of time
 
 ---
 
