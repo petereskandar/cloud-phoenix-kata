@@ -37,12 +37,10 @@ and then a weekly backup could be done for this shred file system
 ![image](https://user-images.githubusercontent.com/24432011/112834233-08ae4700-9098-11eb-9255-5c008e39c25b.png)
 * Regarding Containers communication, as mentioned above, I've created a private hosed zone with **AWS Route53**, 
 and by using **Service discovery integration** in **ECS Fargate** service a record has been created for the Service running **MongoDB** tasks (phoenix-mongo-db-service.local)
-
 ![image](https://user-images.githubusercontent.com/24432011/112839409-78bfcb80-909e-11eb-957f-384464dd7bf4.png)
 * to be able to pass the **DB_CONNECTION_STRING** as an environment variables to all **Node server** tasks, i do it as following :
-<p align="center">
-  <img align="right" src="https://user-images.githubusercontent.com/24432011/112840136-42368080-909f-11eb-96b2-db8c0cc2a08a.png">
-</p>
+![image](https://user-images.githubusercontent.com/24432011/112840136-42368080-909f-11eb-96b2-db8c0cc2a08a.png)
+
 
 ---
 
@@ -86,3 +84,58 @@ and by using **Service discovery integration** in **ECS Fargate** service a reco
                       - echo success force update-service
        
 ---            
+ > **Recover from Crashes :**
+ * Actually I tried to manage it from code by refactoring the **crash api** as following: 
+     ```javascript
+             // crash api 
+            router.get('/crash', function (req, res, next) {
+              console.log(new Error('Requested crash by endpoint /crash'))
+              setTimeout(function () {
+                process.on("exit", function () {
+                    require("child_process").spawn(process.argv.shift(), process.argv, {
+                        cwd: process.cwd(),
+                        detached : true,
+                        stdio: "inherit"
+                    });
+                });
+                process.exit(1);
+              }, 0);
+            })
+     ```
+everything worked fine locally but after using **Containers** with **ECS Fargate** the server couldn't be able to recover again, so I decided to use **Application Load Balancer** health checks to start up a new task in case of failure.
+
+---
+
+> **/generatecert Refactoring :**
+* I've refactored **/generatecert** api using **openssl** instead of **node-forge pki**
+* As shown from the code below, **key & cert** files will be generated and saved to a temporary file called **cert** before sending them back to the client
+  
+  ```javascript
+        exec('openssl genrsa -out ' + SSL_PATH + 'generated-key.pem ' + KEY_SIZE,
+        {shell: '/bin/sh'},
+        (err, stdout, stderr) => {
+          if (err) {
+            console.log((new Date()).toISOString() + ' unable to generate keys ' + err)
+          } else {
+            console.log((new Date()).toISOString() + ' keys generated successfully', stdout)
+            exec('openssl req -new -x509 -key ' + SSL_PATH + 'generated-key.pem -out ' + SSL_PATH + 'generated-cert.pem -days ' + EXPIRATION_DAYS + ' -subj /CN=localhost',
+                {shell: '/bin/sh'},
+                (err, stdout, stderr) => {
+                    err ? console.log((new Date()).toISOString() + ' unable to generated certificate ' + err, stderr) :
+                          console.log((new Date()).toISOString() + ' certificate generated successfully ', stdout)
+                })
+      } 
+    })
+    
+   ```  
+
+
+---
+
+> **API Endpoint:**
+* By visting **http://phoenix.petereskandar.com/**, you'll find a list of API Endpoints as show from the image below.
+* Each API has an endpoint and description fields
+* you can click on Try button to test the api in real time
+* if you're going to try **/crash** api, the server will go down and recover in a couple of minutes based on **ELB and Target Group** health checks
+
+![image](https://user-images.githubusercontent.com/24432011/112866867-926f0c00-90ba-11eb-8e95-924236815df6.png)
