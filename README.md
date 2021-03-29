@@ -1,41 +1,19 @@
-# Phoenix Application Problem
-This problem is about to create a production ready infrastructure for the Phoenix Application.
+Hi all,
 
-## Problem
+I've deployed the whole infrastructure on AWS, the infrastructure is up and running and you can checkt it out by visiting http://phoenix.petereskandar.com/
 
-The development team has released the phoenix application code.
-Your task, if you want to accept it, is to create the production infrastructure
-for the Phoenix application. You must pay attention to some unwanted features
-that were introduced during development. In particular:
+![image](https://user-images.githubusercontent.com/24432011/112828859-91c18000-9090-11eb-88fb-d4c275ec0ed0.png)
 
-- `GET /crash` kill the application process
-- `GET /generatecert` is not optimized and creates resource consumption peaks
+I've used the following services to set up the current environment : 
+    - Github: as a code repo
+    - AWS ECR: as docker image repository
+    - AWS Fargate: for docker containers deployment (Server & MongoDB)
+    ![image](https://user-images.githubusercontent.com/24432011/112829187-0ac0d780-9091-11eb-9df2-4ab60596fa6d.png)
+    
+    - AWS Application Load Balancer & Target Group: for Container Orchestration
+    ![image](https://user-images.githubusercontent.com/24432011/112829416-64c19d00-9091-11eb-86a4-d8cb2b8852a8.png)
 
-## General Requirements
 
-- You may use whatever programming language/platform you prefer. Use something that you know well.
-- You must release your work with an OSI-approved open source license of your choice.
-- You must deliver the sources, with a README that explains how to run it.
-- Add the code to your own Github account and send us the link.
 
-## Application Requirements
 
-- Runs on Node.js 8.11.1 LTS
-- MongoDB as Database
-- Environment variables:
-    - PORT - Application HTTP Exposed Port
-    - DB_CONNECTION_STRING - Database connection string `mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]`
 
-## Run Application
-- Install dependencies `npm install`
-- Run `npm start`
-- Connect to `http://<hostname|IP>:<ENV.PORT>`
-
-## Problem Requirements
-
-1. Automate the creation of the infrastructure and the setup of the application.
-2. Recover from crashes. Implement a method autorestart the service on crash
-3. Backup the logs and database with rotation of 7 days
-4. Notify any CPU peak
-5. Implements a CI/CD pipeline for the code
-6. Scale when the number of request are greater than 10 req /sec
