@@ -21,16 +21,16 @@
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="list-crash" role="tabpanel" aria-labelledby="crash">
-                    {{> tab endpoint='http://phoenix.petereskandar.com/crash'}}
+                    {{> tab endpoint='http://phoenix.petereskandar.com/crash' description='Crash Server API'}}
                 </div>
                 <div class="tab-pane fade" id="list-certificateGenerator" role="tabpanel" aria-labelledby="certificateGenerator">
-                    {{> tab endpoint='http://phoenix.petereskandar.com/generatecert' tryEndpoint='http://phoenix.petereskandar.com/certRender' }}
+                    {{> tab endpoint='http://phoenix.petereskandar.com/generatecert' description='Generate Certificates' tryEndpoint='http://phoenix.petereskandar.com/certRender' }}
                 </div>
                 <div class="tab-pane fade" id="list-CheckDB" role="tabpanel" aria-labelledby="CheckDB">
-                    {{> tab endpoint='http://phoenix.petereskandar.com/checkdbConn' tryEndpoint='http://phoenix.petereskandar.com/checkdbConn' }}
+                    {{> tab endpoint='http://phoenix.petereskandar.com/checkdbConn' description='Check Current DB Connection' tryEndpoint='http://phoenix.petereskandar.com/checkdbConn' }}
                 </div>
                 <div class="tab-pane fade" id="list-QueryLogs" role="tabpanel" aria-labelledby="QueryLogs">
-                    {{> tab endpoint='http://phoenix.petereskandar.com/querylogs' tryEndpoint='http://phoenix.petereskandar.com/querylogs' }}
+                    {{> tab endpoint='http://phoenix.petereskandar.com/querylogs' description='Query MongoDB Logs Collection' tryEndpoint='http://phoenix.petereskandar.com/querylogs' }}
                 </div>
             </div>
         </div>
