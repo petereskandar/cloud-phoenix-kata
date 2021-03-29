@@ -2,7 +2,8 @@ Hi all,
 
 I've deployed the whole infrastructure on AWS, the infrastructure is up and running and you can checkt it out by visiting **http://phoenix.petereskandar.com/**
 
-![image](https://user-images.githubusercontent.com/24432011/112828859-91c18000-9090-11eb-88fb-d4c275ec0ed0.png)
+![image](https://user-images.githubusercontent.com/24432011/112876596-fcd97980-90c5-11eb-9bc9-0341c9f6ea31.png)
+
 
 I've used the following services to set up the current environment : 
 
@@ -36,7 +37,7 @@ and then a weekly backup could be done for this shred file system
 * For Autoscaling; I've created the following role to scale the node server (adding more **Fargate Tasks**) in case of increated traffic
 ![image](https://user-images.githubusercontent.com/24432011/112834233-08ae4700-9098-11eb-9255-5c008e39c25b.png)
 * Regarding Containers communication, as mentioned above, I've created a private hosed zone with **AWS Route53**, 
-and by using **Service discovery integration** in **ECS Fargate** service a record has been created for the Service running **MongoDB** tasks (phoenix-mongo-db-service.local)
+and by using **Service discovery integration** in **ECS Fargate** service a record has been created for the Service running **MongoDB** tasks (phoenix-mongo-db-service.local)  
 ![image](https://user-images.githubusercontent.com/24432011/112839409-78bfcb80-909e-11eb-957f-384464dd7bf4.png)
 * to be able to pass the **DB_CONNECTION_STRING** as an environment variables to all **Node server** tasks, i do it as following :
 ![image](https://user-images.githubusercontent.com/24432011/112840136-42368080-909f-11eb-96b2-db8c0cc2a08a.png)
@@ -135,10 +136,17 @@ everything worked fine locally but after using **Containers** with **ECS Fargate
 # **API Endpoint:**
 * By visting **http://phoenix.petereskandar.com/**, you'll find a list of API Endpoints as show from the image below.
 * Each API has an endpoint and description fields
-* you can click on Try button to test the api in real time
+* you can click on the **Try** button to test the api in real time
 * if you're going to try **/crash** api, the server will go down and recover in a couple of minutes based on **ELB and Target Group** health checks
 
 ![image](https://user-images.githubusercontent.com/24432011/112866867-926f0c00-90ba-11eb-8e95-924236815df6.png)
+
+---
+
+# **Architecture Diagram:**
+* here is a simplified diagram which illustrates how the whole architecture was designed 
+
+<div style="text-align:center"><img src="https://user-images.githubusercontent.com/24432011/112876263-96ecf200-90c5-11eb-9060-04d21cbe57e6.png" /></div>
 
 ---
 
